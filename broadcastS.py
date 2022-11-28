@@ -1,7 +1,6 @@
 import socket
 import time
 import json
-import sys
 
 server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
 server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
@@ -34,6 +33,7 @@ for i in range(len(filesCollection)):
             "fileIndex": i,
             "chunkIndex": index,
             "totalChunks": len(fileChunks),
+            "totalFiles": len(filesCollection)
         }
         encodedChunkData = bytes(json.dumps(fileData), 'utf-8')
         rawChunk = chunk

@@ -1,5 +1,6 @@
 import socket
 import json
+import sys
 
 client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)  # UDP
 client.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
@@ -28,13 +29,16 @@ while True:
                 "fileName": cleanData['fileName'],
                 "fileIndex": cleanData['fileIndex'],
                 "chunkIndex": cleanData['chunkIndex'],
-                "totalChunks": cleanData['totalChunks']
+                "totalChunks": cleanData['totalChunks'],
+                "totalFiles": cleanData["totalFiles"]
             }
         else:
             print('Chunk data: ', cleanData)
             if fileData['chunkIndex'] == fileData['totalChunks'] - 1:
                 print("Acabamos---------------------------")
                 in_file.close()
+                if fileData["fileIndex"] == fileData["totalFiles"] - 1:
+                    sys.exit(1)
                 break
             
             if bander and fileData["fileIndex"] != currentIndex:
