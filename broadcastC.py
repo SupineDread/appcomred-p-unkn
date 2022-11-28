@@ -7,8 +7,9 @@ client.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
 
 client.bind(("", 37020))
 
-for i in range(3):
+while True:
     bander = True
+    currentIndex = -1
     while True:
         data, addr = client.recvfrom(1024)
         isJson = False
@@ -36,10 +37,11 @@ for i in range(3):
                 in_file.close()
                 break
             
-            if bander:
+            if bander and fileData["fileIndex"] != currentIndex:
                 in_file = open(f"received/{fileData['fileName']}", "wb")
                 in_file.write(cleanData)
                 bander = False
+                currentIndex = fileData["fileIndex"]
             else:
                 in_file.write(cleanData)
 
